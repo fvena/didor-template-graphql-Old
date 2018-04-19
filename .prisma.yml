@@ -1,14 +1,14 @@
 # the name for the service (will be part of the service's HTTP endpoint)
-service: prueba
+service: ${env:APP_NAME}
 
 # the cluster and stage the service is deployed to
-stage: dev
+stage: ${env:PRISMA_STAGE}
 
 # to disable authentication:
 # disableAuth: true
-secret: mysecret123
+secret: ${env:PRISMA_SECRET}
 
 # the file path pointing to your data model
 datamodel: src/api/datamodel.graphql
 
-cluster: local
+cluster: ${env:PRISMA_CLUSTER}

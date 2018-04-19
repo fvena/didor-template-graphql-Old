@@ -1,0 +1,10 @@
+{
+  "env": {
+    "node": true
+  },
+  "extends": "airbnb-base",
+  "rules": {
+    "remark-lint": 0,
+    "prefer-destructuring": ["error", {"object": false, "array": true}]
+  }
+}

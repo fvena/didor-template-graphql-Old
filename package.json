@@ -1,17 +1,49 @@
 {
-  "name": "prueba",
+  "name": "didor-templates-graphql",
+  "version": "0.0.1",
+  "description": "Node/Express template for building GraphQL APIs",
+  "homepage": "https://github.com/fvena/didor-templates-graphql#readme",
+  "author": "Francisco Vena <fvena32@gmail.com>",
+  "main": "index.js",
+  "license": "MIT",
+  "engines": {
+    "node": ">=v8.6.0",
+    "npm": ">=5.6.0"
+  },
   "scripts": {
-    "start": "node src/index.js",
+    "start": "nodemon -x node -r dotenv/config src/index.js",
     "dev": "npm-run-all --parallel start playground",
     "playground": "graphql playground",
     "prisma": "prisma"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fvena/didor-templates-graphql.git"
+  },
+  "keywords": [
+    "didor",
+    "node",
+    "express",
+    "apollo",
+    "prisma",
+    "graphql",
+    "api",
+    "starter"
+  ],
+  "bugs": {
+    "url": "https://github.com/fvena/didor-templates-graphql/issues"
   },
   "dependencies": {
     "graphql-yoga": "1.8.5",
     "prisma-binding": "1.5.17"
   },
   "devDependencies": {
+    "dotenv": "^5.0.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0",
     "graphql-cli": "2.15.9",
+    "nodemon": "^1.17.3",
     "npm-run-all": "4.1.2",
     "prisma": "1.6.3"
   }
