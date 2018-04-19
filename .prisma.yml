@@ -9,10 +9,6 @@ stage: dev
 secret: mysecret123
 
 # the file path pointing to your data model
-datamodel: datamodel.graphql
-
-# seed your service with initial data based on seed.graphql
-seed:
-  import: seed.graphql
+datamodel: src/api/datamodel.graphql
 
 cluster: local
