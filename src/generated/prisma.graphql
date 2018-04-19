@@ -10,6 +10,7 @@ type Post implements Node {
   isPublished: Boolean!
   title: String!
   text: String!
+  author: String
 }
 
 
@@ -100,6 +101,7 @@ input PostCreateInput {
   isPublished: Boolean
   title: String!
   text: String!
+  author: String
 }
 
 """
@@ -125,6 +127,8 @@ enum PostOrderByInput {
   title_DESC
   text_ASC
   text_DESC
+  author_ASC
+  author_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -136,6 +140,7 @@ type PostPreviousValues {
   isPublished: Boolean!
   title: String!
   text: String!
+  author: String
 }
 
 type PostSubscriptionPayload {
@@ -177,6 +182,7 @@ input PostUpdateInput {
   isPublished: Boolean
   title: String
   text: String
+  author: String
 }
 
 input PostWhereInput {
@@ -352,6 +358,59 @@ input PostWhereInput {
   All values not ending with the given string.
   """
   text_not_ends_with: String
+  author: String
+  """
+  All values that are not equal to given value.
+  """
+  author_not: String
+  """
+  All values that are contained in given list.
+  """
+  author_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  author_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  author_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  author_lte: String
+  """
+  All values greater than the given value.
+  """
+  author_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  author_gte: String
+  """
+  All values containing the given string.
+  """
+  author_contains: String
+  """
+  All values not containing the given string.
+  """
+  author_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  author_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  author_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  author_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  author_not_ends_with: String
 }
 
 input PostWhereUniqueInput {

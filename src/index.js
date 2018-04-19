@@ -1,47 +1,9 @@
-const { GraphQLServer } = require('graphql-yoga')
-const { Prisma } = require('prisma-binding')
-
-const resolvers = {
-  Query: {
-    feed(parent, args, ctx, info) {
-      return ctx.db.query.posts({ where: { isPublished: true } }, info)
-    },
-    drafts(parent, args, ctx, info) {
-      return ctx.db.query.posts({ where: { isPublished: false } }, info)
-    },
-    post(parent, { id }, ctx, info) {
-      return ctx.db.query.post({ where: { id } }, info)
-    },
-  },
-  Mutation: {
-    createDraft(parent, { title, text }, ctx, info) {
-      return ctx.db.mutation.createPost(
-        {
-          data: {
-            title,
-            text,
-          },
-        },
-        info,
-      )
-    },
-    deletePost(parent, { id }, ctx, info) {
-      return ctx.db.mutation.deletePost({ where: { id } }, info)
-    },
-    publish(parent, { id }, ctx, info) {
-      return ctx.db.mutation.updatePost(
-        {
-          where: { id },
-          data: { isPublished: true },
-        },
-        info,
-      )
-    },
-  },
-}
+const { GraphQLServer } = require('graphql-yoga');
+const { Prisma } = require('prisma-binding');
+const { typeDefs, resolvers } = require('./utils/merges');
 
 const server = new GraphQLServer({
-  typeDefs: './src/api/schema.graphql',
+  typeDefs,
   resolvers,
   context: req => ({
     ...req,
@@ -52,7 +14,7 @@ const server = new GraphQLServer({
       debug: process.env.PRISMA_DEBUG, // log all GraphQL queryies & mutations
     }),
   }),
-})
+});
 
 const serverOptions = {
   port: process.env.APP_PORT,

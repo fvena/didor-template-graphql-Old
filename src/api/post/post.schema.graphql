@@ -1,5 +1,3 @@
-# import Post from "../generated/prisma.graphql"
-
 type Query {
   feed: [Post!]!
   drafts: [Post!]!
@@ -9,5 +7,6 @@ type Query {
 type Mutation {
   createDraft(title: String!, text: String): Post
   deletePost(id: ID!): Post
+  addAuthor(id: ID!, author: String): Post
   publish(id: ID!): Post
 }

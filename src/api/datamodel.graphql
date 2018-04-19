@@ -3,4 +3,5 @@ type Post {
   isPublished: Boolean! @default(value: false)
   title: String!
   text: String!
+  author: String
 }
