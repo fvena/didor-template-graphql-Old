@@ -36,4 +36,4 @@ Mutation.publish = (parent, { id }, ctx, info) => {
   );
 };
 
-module.exports = { Mutation };
+export { Mutation }; // eslint-disable-line

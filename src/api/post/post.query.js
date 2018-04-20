@@ -10,4 +10,4 @@ const Query = {
   },
 };
 
-module.exports = { Query };
+export { Query }; // eslint-disable-line

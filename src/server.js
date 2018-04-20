@@ -1,6 +1,6 @@
-const { GraphQLServer } = require('graphql-yoga');
-const { Prisma } = require('prisma-binding');
-const { typeDefs, resolvers } = require('./utils/merges');
+import { GraphQLServer } from 'graphql-yoga';
+import { Prisma } from 'prisma-binding';
+import { typeDefs, resolvers } from './utils/merges';
 
 const server = new GraphQLServer({
   typeDefs,

@@ -1,5 +1,5 @@
-const path = require('path');
-const { fileLoader, mergeTypes, mergeResolvers } = require('merge-graphql-schemas');
+import path from 'path';
+import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 
 /**
  * function getTypes
@@ -28,7 +28,7 @@ function getResolvers() {
 const typeDefs = getTypes();
 const resolvers = getResolvers();
 
-module.exports = {
+export {
   typeDefs,
   resolvers,
 };

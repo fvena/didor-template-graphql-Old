@@ -11,7 +11,7 @@
     "npm": ">=5.6.0"
   },
   "scripts": {
-    "start": "nodemon -x node -r dotenv/config src/index.js",
+    "start": "nodemon src/server.js --watch api -r dotenv/config --exec babel-node",
     "dev": "npm-run-all --parallel start playground",
     "playground": "graphql playground",
     "prisma": "prisma"
@@ -34,12 +34,18 @@
     "url": "https://github.com/fvena/didor-templates-graphql/issues"
   },
   "dependencies": {
+    "babel-eslint": "^8.2.3",
+    "babel-plugin-inline-dotenv": "^1.1.2",
     "graphql-yoga": "1.8.5",
     "merge-graphql-schemas": "^1.5.1",
+    "npm": "^5.8.0",
     "prisma-binding": "1.5.17",
     "validator": "^9.4.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "dotenv": "^5.0.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
