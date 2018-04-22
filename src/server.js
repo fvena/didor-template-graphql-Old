@@ -1,6 +1,7 @@
 import { GraphQLServer } from 'graphql-yoga';
 import { Prisma } from 'prisma-binding';
 import { typeDefs, resolvers } from './utils/merges';
+import depthLimit from 'graphql-depth-limit';
 
 const server = new GraphQLServer({
   typeDefs,
@@ -18,6 +19,9 @@ const server = new GraphQLServer({
 
 const serverOptions = {
   port: process.env.APP_PORT,
+  validationRules: [
+    depthLimit(1),
+  ],
 };
 
 server

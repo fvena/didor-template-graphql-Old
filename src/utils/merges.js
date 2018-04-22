@@ -6,9 +6,11 @@ import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
  * Devuelve un Objeto con todos los tipos definidos en el API
  */
 function getTypes() {
-  const prismaScheme = fileLoader(path.join(__dirname, '../generated/*.graphql'));
-  const apiSchemesArray = fileLoader(path.join(__dirname, '../api/**/*.schema.graphql'));
-  const typesArray = prismaScheme.concat(apiSchemesArray);
+  // const prismaScheme = fileLoader(path.join(__dirname, '../generated/*.graphql'));
+  // const apiSchemesArray = fileLoader(path.join(__dirname, '../api/**/*.schema.graphql'));
+  // const typesArray = prismaScheme.concat(apiSchemesArray);
+
+  const typesArray = fileLoader(path.join(__dirname, '../api/**/*.graphql'));
 
   return mergeTypes(typesArray, { all: true });
 }

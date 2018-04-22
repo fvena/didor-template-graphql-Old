@@ -8,7 +8,8 @@ stage: ${env:PRISMA_STAGE}
 # disableAuth: true
 secret: ${env:PRISMA_SECRET}
 
-# the file path pointing to your data model
-datamodel: src/api/datamodel.graphql
+# Listado de rutas de los modelos de datos
+datamodel:
+  - src/api/post/post.datamodel.graphql
 
 cluster: ${env:PRISMA_CLUSTER}
