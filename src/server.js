@@ -1,7 +1,7 @@
+import depthLimit from 'graphql-depth-limit';
 import { GraphQLServer } from 'graphql-yoga';
 import { Prisma } from 'prisma-binding';
 import { typeDefs, resolvers } from './utils/merges';
-import depthLimit from 'graphql-depth-limit';
 
 const server = new GraphQLServer({
   typeDefs,
@@ -25,5 +25,5 @@ const serverOptions = {
 };
 
 server
-  .start(serverOptions, () => console.log(`Server is running on localhost:${serverOptions.port}`))
-  .catch(err => console.log('connection Error', err));
+  .start(serverOptions, () => console.log(`Server is running on localhost:${serverOptions.port}`)) // eslint-disable-line no-console
+  .catch(err => console.log('connection Error', err)); // eslint-disable-line no-console

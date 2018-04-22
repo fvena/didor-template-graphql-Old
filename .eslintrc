@@ -2,7 +2,13 @@
   "env": {
     "node": true
   },
-  "extends": "airbnb-base",
+  "plugins": [
+    "jest"
+  ],
+  "extends": [
+    "airbnb-base",
+    "plugin:jest/recommended"
+  ],
   "parser": "babel-eslint",
   "rules": {
     "arrow-body-style": 0,
