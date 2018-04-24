@@ -12,13 +12,18 @@
     "npm": ">=5.6.0"
   },
   "scripts": {
-    "start": "nodemon src/server.js --watch src -r dotenv/config --exec babel-node",
-    "dev": "npm-run-all --parallel start playground",
-    "playground": "graphql playground",
-    "prisma": "prisma",
-    "test": "npm run lint && npm run jest",
+    "server": "nodemon src/server.js --watch src --exec babel-node",
+    "playground": "wait-on http://localhost:4000/ && graphql playground",
+    "dev": "NODE_ENV=dev npm-run-all -p server playground",
+    "pretest": "npm run test:prisma",
+    "test": "NODE_ENV=test npm-run-all lint -p -r server test:jest",
+    "test:jest": "wait-on http://localhost:4001/ && jest src/**",
+    "test:prisma": "prisma deploy -e .env.test && prisma reset -fe .env.test",
     "lint": "eslint src/**",
-    "jest": "jest --coverage"
+    "precommit": "yarn test",
+    "prebuild": "npm run test",
+    "build": "rimraf build && babel ./src --out-dir=./build/src --source-maps inline --copy-files",
+    "postbuild": "copyfiles .*.yml build"
   },
   "repository": {
     "type": "git",
@@ -37,11 +42,8 @@
     "api",
     "starter"
   ],
-  "jest": {
-    "testEnvironment": "node",
-    "verbose": true
-  },
   "dependencies": {
+    "dotenv": "^5.0.1",
     "graphql-depth-limit": "^1.1.0",
     "graphql-yoga": "1.8.5",
     "merge-graphql-schemas": "^1.5.1",
@@ -49,14 +51,12 @@
     "validator": "^9.4.1"
   },
   "devDependencies": {
-    "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.3",
     "babel-jest": "^22.4.3",
-    "babel-plugin-inline-dotenv": "^1.1.2",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "dotenv": "^5.0.1",
+    "copyfiles": "^2.0.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.11.0",
@@ -64,9 +64,11 @@
     "graphql-cli": "2.15.9",
     "graphql-tester": "^0.0.5",
     "jest": "^22.4.3",
+    "jest-runner-eslint": "^0.4.0",
     "nodemon": "^1.17.3",
     "npm": "^5.8.0",
     "npm-run-all": "4.1.2",
-    "prisma": "1.6.3"
+    "prisma": "1.6.3",
+    "wait-on": "^2.1.0"
   }
 }

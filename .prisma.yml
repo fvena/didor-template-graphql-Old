@@ -9,7 +9,6 @@ stage: ${env:PRISMA_STAGE}
 secret: ${env:PRISMA_SECRET}
 
 # Listado de rutas de los modelos de datos
-datamodel:
-  - src/api/post/post.datamodel.graphql
+datamodel: src/api/datamodel.graphql
 
 cluster: ${env:PRISMA_CLUSTER}

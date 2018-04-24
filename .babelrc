@@ -1,7 +1,6 @@
 {
   "presets": ["env"],
   "plugins": [
-    "transform-object-rest-spread",
-    "inline-dotenv"
+    "transform-object-rest-spread"
   ]
 }

@@ -1,11 +1,12 @@
 import { tester } from 'graphql-tester';
+import { APP_PORT } from '../../utils/vars';
 
 const testing = tester({
-  url: `http://localhost:${process.env.APP_PORT}/`,
+  url: `http://localhost:${APP_PORT}/`,
 });
 
-describe('post resolvers', () => {
-  test('drafts query', (done) => {
+describe('Post resolvers', () => {
+  test('Si no hay datos devuelve un array vacio', (done) => {
     testing(`
       {
         drafts {
@@ -17,43 +18,58 @@ describe('post resolvers', () => {
       }
     `)
       .then((response) => {
-        console.log(response);
         expect(response.status).toBe(200);
         expect(response.success).toBeTruthy();
         expect(response).toMatchObject({
           data: {
-            drafts: [
+            drafts: [],
+          },
+        });
+        done();
+      });
+  });
+
+  test('Si no llamo a un resolvers registrado debe devolver error', (done) => {
+    testing(`
+      {
+        mutation {
+          createDrafts () {}
+        }
+      }
+    `)
+      .then((response) => {
+        expect(response.status).toBe(400);
+        expect(response.success).toBeFalsy();
+        done();
+      });
+  });
+
+  test('Añadir un borrador', (done) => {
+    testing(`
+      mutation {
+        createDraft (
+          title: "Post 1"
+          text: "Texto 1"
+        ) {
+          id
+          title
+          text
+        }
+      }
+    `)
+      .then((response) => {
+        expect(response.status).toBe(200);
+        expect(response.success).toBeTruthy();
+        expect(response.data.id).not.toBeNull();
+        const idInserted = response.data.createDraft.id;
+        expect(response).toMatchObject({
+          data: {
+            createDraft:
               {
-                id: 'cjgb85rye000p08586gn84k5l',
-                title: 'post1',
-                text: 'texto 1',
-                author: 'Pepe',
+                id: idInserted,
+                title: 'Post 1',
+                text: 'Texto 1',
               },
-              {
-                id: 'cjgb85xy9000s0858wdh4cvjy',
-                title: 'post2',
-                text: 'texto 2',
-                author: 'Pepe',
-              },
-              {
-                id: 'cjgb862g3000v08586iktgfti',
-                title: 'post3',
-                text: 'texto 3',
-                author: 'Pepe',
-              },
-              {
-                id: 'cjgb867hp000y0858x4cz05y6',
-                title: 'post4',
-                text: 'texto 4',
-                author: 'Pipo',
-              },
-              {
-                id: 'cjgb86bk400110858lby7v0wh',
-                title: 'post5',
-                text: 'texto 5',
-                author: 'Pipo',
-              },
-            ],
           },
         });
         done();

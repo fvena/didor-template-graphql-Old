@@ -59,4 +59,4 @@ typings/
 
 # macOS Files
 .DS_Store
-generated/
+build/
