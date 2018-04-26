@@ -25,7 +25,9 @@
     "prebuild": "npm run test",
     "build": "rimraf build && babel ./src --out-dir=./build/src --source-maps inline --copy-files",
     "postbuild": "copyfiles .*.yml build",
-    "deploy": "prisma deploy && graphql get-schema --project prisma && graphql prepare"
+    "deploy": "prisma deploy && graphql get-schema --project prisma && graphql prepare",
+    "preseed": "prisma reset -f && prisma deploy -f",
+    "seed": "NODE_ENV=development babel-node src/utils/seed"
   },
   "repository": {
     "type": "git",
@@ -46,6 +48,7 @@
   ],
   "dependencies": {
     "dotenv": "^5.0.1",
+    "faker": "^4.1.0",
     "graphql-depth-limit": "^1.1.0",
     "graphql-yoga": "^1.9.2",
     "merge-graphql-schemas": "^1.5.1",

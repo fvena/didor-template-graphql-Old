@@ -218,6 +218,9 @@ $ yarn build
 # Genera/Modifica la base de datos
 $ yarn deploy
 
+# Genera datos de prueba en la base de datos
+$ yarn seed
+
 # Genera y abre la documentación de la api
 # yarn docs
 ```
