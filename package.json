@@ -13,17 +13,19 @@
   },
   "scripts": {
     "server": "nodemon src/server.js --watch src --exec babel-node",
-    "playground": "wait-on http://localhost:4000/ && graphql playground",
-    "dev": "NODE_ENV=dev npm-run-all -p server playground",
+    "playground": "wait-on http://localhost:4000/ && prisma playground",
+    "dev": "NODE_ENV=development npm-run-all -p server playground",
     "pretest": "npm run test:prisma",
-    "test": "NODE_ENV=test npm-run-all lint -p -r server test:jest",
+    "test": "NODE_ENV=test npm-run-all -p -r server test:jest",
     "test:jest": "wait-on http://localhost:4001/ && jest src/**",
     "test:prisma": "prisma deploy -e .env.test && prisma reset -fe .env.test",
     "lint": "eslint src/**",
+    "validate": "npm run lint && npm run test",
     "precommit": "yarn test",
     "prebuild": "npm run test",
     "build": "rimraf build && babel ./src --out-dir=./build/src --source-maps inline --copy-files",
-    "postbuild": "copyfiles .*.yml build"
+    "postbuild": "copyfiles .*.yml build",
+    "deploy": "prisma deploy && graphql get-schema --project prisma && graphql prepare"
   },
   "repository": {
     "type": "git",
@@ -45,9 +47,9 @@
   "dependencies": {
     "dotenv": "^5.0.1",
     "graphql-depth-limit": "^1.1.0",
-    "graphql-yoga": "1.8.5",
+    "graphql-yoga": "^1.9.2",
     "merge-graphql-schemas": "^1.5.1",
-    "prisma-binding": "1.5.17",
+    "prisma-binding": "^1.5.18",
     "validator": "^9.4.1"
   },
   "devDependencies": {
@@ -61,14 +63,13 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-jest": "^21.15.1",
-    "graphql-cli": "2.15.9",
+    "graphql-cli": "^2.15.11",
     "graphql-tester": "^0.0.5",
     "jest": "^22.4.3",
-    "jest-runner-eslint": "^0.4.0",
     "nodemon": "^1.17.3",
-    "npm": "^5.8.0",
-    "npm-run-all": "4.1.2",
-    "prisma": "1.6.3",
+    "npm": "^6.0.0",
+    "npm-run-all": "^4.1.2",
+    "prisma": "^1.7.1",
     "wait-on": "^2.1.0"
   }
 }

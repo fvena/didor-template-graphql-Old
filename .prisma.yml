@@ -1,14 +1,4 @@
-# the name for the service (will be part of the service's HTTP endpoint)
-service: ${env:APP_NAME}
-
-# the cluster and stage the service is deployed to
-stage: ${env:PRISMA_STAGE}
-
-# to disable authentication:
-# disableAuth: true
-secret: ${env:PRISMA_SECRET}
-
-# Listado de rutas de los modelos de datos
-datamodel: src/api/datamodel.graphql
-
-cluster: ${env:PRISMA_CLUSTER}
+endpoint: ${env:PRISMA_ENDPOINT}
+secret: ${env:PRISMA_MANAGEMENT_API_SECRET}
+datamodel:
+  - src/database/post.graphql
