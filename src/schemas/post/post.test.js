@@ -13,7 +13,6 @@ describe('Post resolvers', () => {
           id
           title
           text
-          author
         }
       }
     `)
@@ -45,11 +44,29 @@ describe('Post resolvers', () => {
   });
 
   test('Añadir un borrador', (done) => {
+    const userID = '';
+
     testing(`
       mutation {
-        createDraft (
-          title: "Post 1"
-          text: "Texto 1"
+        createUser (
+          name: "John Doe"
+          email: "johndoe@email.com"
+        ) {
+          id
+          name
+          email
+        }
+      }
+    `)
+      .then((response) => {
+        userID = response;
+      });
+
+    testing(`
+      mutation {
+        createUser (
+          name: "John Doe"
+          text: "johndoe@email.com"
         ) {
           id
           title

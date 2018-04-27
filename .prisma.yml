@@ -1,4 +1,0 @@
-endpoint: ${env:PRISMA_ENDPOINT}
-secret: ${env:PRISMA_MANAGEMENT_API_SECRET}
-datamodel:
-  - src/database/post.graphql

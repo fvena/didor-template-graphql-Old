@@ -1,29 +1,24 @@
-import depthLimit from 'graphql-depth-limit';
 import { GraphQLServer } from 'graphql-yoga';
-import { Prisma } from './database/prisma.generated';
-import { typeDefs, resolvers } from './utils/merges';
+import { Prisma } from 'prisma-binding';
+import resolvers from './utils/resolvers';
 import * as config from './utils/vars';
 
-const prisma = new Prisma({
-  typeDefs: 'src/database/prisma.generated.graphql',
-  endpoint: config.PRISMA_ENDPOINT,
-  secret: config.PRISMA_MANAGEMENT_API_SECRET,
+
+const db = new Prisma({
+  typeDefs: 'src/database/prisma.generated.graphql', // the auto-generated GraphQL schema of the Prisma API
+  endpoint: config.PRISMA_ENDPOINT, // the endpoint of the Prisma API (value set in `.env`)
+  secret: config.PRISMA_MANAGEMENT_API_SECRET, // Secret
+  debug: true, // log all GraphQL queries & mutations sent to the Prisma API
 });
 
 const server = new GraphQLServer({
-  typeDefs,
+  typeDefs: './src/schemas/schema.graphql',
   resolvers,
-  context: req => ({
-    ...req,
-    db: prisma,
-  }),
+  context: req => ({ ...req, db }),
 });
 
 const serverOptions = {
   port: config.APP_PORT,
-  validationRules: [
-    depthLimit(1),
-  ],
 };
 
 server
