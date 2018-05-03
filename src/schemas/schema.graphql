@@ -2,18 +2,25 @@
 # import User from "../database/prisma.generated.graphql"
 
 type Query {
+  # User
+  users: [User!]!
+  user(id: ID!): User
+
+  # Post
   feed: [Post!]!
   drafts: [Post!]!
   post(id: ID!): Post
-  users: [User!]!
-  user(id: ID!): User
 }
 
 type Mutation {
+  # User
   createUser(email: String!, name: String!): User!
   updateUser(id: ID!, email: String, name: String): User!
   deleteUser(id: ID!): User!
+
+  # Post
   createDraft(title: String!, text: String!, user: String!): Post!
   publish(id: ID!): Post!
+  updatePost(id: ID!, title: String, text: String, user: String): Post!
   deletePost(id: ID!): Post!
 }

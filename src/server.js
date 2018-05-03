@@ -3,12 +3,11 @@ import { Prisma } from 'prisma-binding';
 import resolvers from './utils/resolvers';
 import * as config from './utils/vars';
 
-
 const db = new Prisma({
   typeDefs: 'src/database/prisma.generated.graphql', // the auto-generated GraphQL schema of the Prisma API
   endpoint: config.PRISMA_ENDPOINT, // the endpoint of the Prisma API (value set in `.env`)
   secret: config.PRISMA_MANAGEMENT_API_SECRET, // Secret
-  debug: true, // log all GraphQL queries & mutations sent to the Prisma API
+  debug: false, // log all GraphQL queries & mutations sent to the Prisma API
 });
 
 const server = new GraphQLServer({

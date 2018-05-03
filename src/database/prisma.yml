@@ -4,14 +4,13 @@ endpoint: ${env:PRISMA_ENDPOINT}
 # The file containing the definition of your data model.
 datamodel: datamodel.graphql
 
+# If specified, the `secret` must be used to generate a JWT which is attached
+# to the `Authorization` header of HTTP requests made against the Prisma API.
+# Info: https://www.prisma.io/docs/reference/prisma-api/concepts-utee3eiquo#authentication
+secret: ${env:PRISMA_MANAGEMENT_API_SECRET}
 
 # Download the GraphQL schema of the Prisma API into
 # `src/generated/prisma.graphql` (as specfied in `.graphqlconfig.yml`).
 hooks:
   post-deploy:
-    - graphql get-schema --project database
-
-# If specified, the `secret` must be used to generate a JWT which is attached
-# to the `Authorization` header of HTTP requests made against the Prisma API.
-# Info: https://www.prisma.io/docs/reference/prisma-api/concepts-utee3eiquo#authentication
-secret: ${env:PRISMA_MANAGEMENT_API_SECRET}
+    - graphql get-schema --project prisma

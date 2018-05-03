@@ -15,22 +15,18 @@
     "server": "nodemon src/server.js -e js,graphql --exec babel-node",
     "playground": "graphql playground",
     "dev": "NODE_ENV=development npm-run-all --parallel server playground",
-    "lint": "eslint src/**",
-    "lint:watch": "esw src/** --watch --clear",
     "preseed": "prisma reset -f && prisma deploy -f",
     "seed": "NODE_ENV=development babel-node src/utils/seed",
-
-
+    "lint": "eslint src/**",
+    "lint:watch": "esw src/** --watch --clear",
     "pretest": "prisma reset -fe .env.test && prisma deploy -e .env.test",
     "test": "NODE_ENV=test npm-run-all -p -r server test:jest",
-    "test:jest": "wait-on http://localhost:4001/ && jest src/**",
-
+    "test:jest": "wait-on http://localhost:4001/ && clear && jest src/schemas/**",
     "validate": "npm run lint && npm run test",
-    "precommit": "yarn test",
+    "precommit": "npm run validate",
     "prebuild": "npm run test",
     "build": "rimraf build && babel ./src --out-dir=./build/src --source-maps inline --copy-files",
     "postbuild": "copyfiles .*.yml build",
-
     "DEPRECIATED-deploy": "prisma deploy && graphql get-schema --project database",
     "DEPRECIATED-server": "nodemon src/server.js --watch src --exec babel-node",
     "DEPRECIATED-playground": "wait-on http://localhost:4000/ && prisma playground",
@@ -77,7 +73,7 @@
     "jest": "^22.4.3",
     "nodemon": "1.17.3",
     "npm-run-all": "4.1.2",
-    "prisma": "1.7.1",
+    "prisma": "1.7.3",
     "wait-on": "^2.1.0"
   }
 }
