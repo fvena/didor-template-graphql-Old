@@ -58,10 +58,10 @@ desarrollo de esta plantilla.
 
 ```bash
 # Clonar el repositorio
-$ git clone --depth 1 https://github.com/fvena/didor-restful-mysql-boilerplate
+$ git clone --depth 1 https://github.com/fvena/didor-template-graphql myproject
 
 # Reiniciar git
-$ cd didor-restful-mysql-boilerplate
+$ cd myproject
 $ rm -rf .git
 $ git init
 ```
