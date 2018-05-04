@@ -1,16 +1,27 @@
-type Post {
+type Post @model{
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
   isPublished: Boolean! @default(value: "false")
   title: String!
   text: String!
-  author: User!
+  author: [User!]! @relation(name: "WrittenPosts")
+  likedBy: [User!]! @relation(name: "LikedPosts")
+  comments: [Comment!]! @relation(name: "CommentsPost")
 }
 
-type User {
+type User @model{
   id: ID! @unique
   email: String! @unique
   name: String!
-  posts: [Post!]!
+  writtenComments: [Comment!]! @relation(name: "UserComments")
+  writtenPosts: [Post!]! @relation(name: "WrittenPosts")
+  likedPosts: [Post!]! @relation(name: "LikedPosts")
+}
+
+type Comment @model{
+  id: ID! @unique
+  text: String!
+  commentBy: User! @relation(name: "UserComments")
+  post: Post! @relation(name: "CommentsPost")
 }

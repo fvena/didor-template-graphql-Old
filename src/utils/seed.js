@@ -29,8 +29,23 @@ async function generateUser() {
   }
 
   for (let i = 0; i < postAmount; i++) {
+    // Genera aleatoriamente un valor true/false
     const published = Math.random() >= 0.5;
-    const user = users[Math.floor(Math.random() * users.length)];
+
+    // Genera un listado aleatorio de autores para un post
+    const maxNumAuthors = 3;
+    const numAuthorsPost = Math.floor(Math.random() * maxNumAuthors) + 1;
+    const authors = await getRandomsUser(users, numAuthorsPost);
+
+    // Genera un listado aleatorio de usuarios que les gusta un post
+    const maxNumLikes = users.length;
+    const numLikesPost = Math.floor(Math.random() * maxNumLikes) + 1;
+    const likes = await getRandomsUser(users, numLikesPost);
+
+    // Genera un único author aleatoriamente
+    const maxNumComments = 10;
+    const numCommentsPost = Math.floor(Math.random() * maxNumComments) + 1;
+    const comments = await getComments(users,numCommentsPost);
 
     prisma.mutation.createPost({
       data: {
@@ -38,7 +53,13 @@ async function generateUser() {
         text: faker.lorem.paragraph(),
         isPublished: published,
         author: {
-          connect: { id: user },
+          connect: authors,
+        },
+        likedBy: {
+          connect: likes,
+        },
+        comments: {
+          create: comments,
         },
       },
     });
@@ -49,10 +70,40 @@ async function generateUser() {
 /**
  * Generador de Usuarios
  */
+function getRandomsUser(array, n) {
+  const shuffled = array.sort(() => 0.5 - Math.random());
+  const selected = shuffled.slice(0, n);
+  const result = [];
+
+  for (let i = 0; i < n; i++) {
+    const user = {};
+    user.id = selected[i];
+    result.push(user);
+  }
+
+  return result;
+}
+
+
+function getComments(usersArray, n) {
+  const result = [];
+
+  for (let i = 0; i < n; i++) {
+    const author = usersArray[Math.floor(Math.random() * usersArray.length)];
+    const text = faker.lorem.sentence();
+    const user = {};
+    const comment = {};
+
+    user.id = author;
+
+    comment.text = text;
+    comment.commentBy = {};
+    comment.commentBy.connect = user;
+
+    result.push(comment);
+  }
+
+  return result;
+}
 
 generateUser();
-
-
-/**
- * Generador de Posts
- */

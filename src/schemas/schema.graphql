@@ -21,6 +21,14 @@ type Mutation {
   # Post
   createDraft(title: String!, text: String!, user: String!): Post!
   publish(id: ID!): Post!
-  updatePost(id: ID!, title: String, text: String, user: String): Post!
+  updatePost(id: ID!, title: String, text: String): Post!
   deletePost(id: ID!): Post!
+  addPostAuthor(id: ID!, user: String!): Post!
+  deletePostAuthor(id: ID!, user: String!): Post!
+  likePost(id: ID!, user: String!): Post!
+  dislikePost(id: ID!, user: String!): Post!
+
+  # Comment
+  addComment(text: String!, userID: String!, postID: String!): Post!
+  deleteComment(id: ID!): Post!
 }

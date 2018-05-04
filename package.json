@@ -1,6 +1,6 @@
 {
   "name": "didor-templates-graphql",
-  "version": "0.0.1",
+  "version": "0.4.0",
   "description": "Node/Express template for building GraphQL APIs",
   "homepage": "https://github.com/fvena/didor-templates-graphql#readme",
   "author": "Francisco Vena <fvena32@gmail.com>",
@@ -22,15 +22,13 @@
     "pretest": "prisma reset -fe .env.test && prisma deploy -e .env.test",
     "test": "NODE_ENV=test npm-run-all -p -r server test:jest",
     "test:jest": "wait-on http://localhost:4001/ && clear && jest src/schemas/**",
-    "validate": "npm run lint && npm run test",
+    "validate": "npm run lint && npm run test && npm outdated --depth 0",
     "precommit": "npm run validate",
     "prebuild": "npm run test",
     "build": "rimraf build && babel ./src --out-dir=./build/src --source-maps inline --copy-files",
     "postbuild": "copyfiles .*.yml build",
-    "DEPRECIATED-deploy": "prisma deploy && graphql get-schema --project database",
-    "DEPRECIATED-server": "nodemon src/server.js --watch src --exec babel-node",
-    "DEPRECIATED-playground": "wait-on http://localhost:4000/ && prisma playground",
-    "DEPRECIATED-dev": "NODE_ENV=development npm-run-all -p server playground"
+    "deploy": "prisma deploy",
+    "deploy:force": "prisma reset -f && prisma deploy -f"
   },
   "repository": {
     "type": "git",
@@ -50,16 +48,19 @@
     "starter"
   ],
   "dependencies": {
+    "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "faker": "^4.1.0",
-    "graphql-yoga": "1.12.1",
+    "graphql-yoga": "1.13.1",
     "merge-graphql-schemas": "^1.5.1",
-    "prisma-binding": "1.5.18"
+    "prisma-binding": "1.5.18",
+    "validator": "^10.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.3",
     "babel-jest": "^22.4.3",
+    "babel-plugin-transform-es2015-parameters": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "copyfiles": "^2.0.0",
@@ -73,7 +74,8 @@
     "jest": "^22.4.3",
     "nodemon": "1.17.3",
     "npm-run-all": "4.1.2",
-    "prisma": "1.7.3",
+    "outdated": "^0.1.1",
+    "prisma": "1.7.4",
     "wait-on": "^2.1.0"
   }
 }

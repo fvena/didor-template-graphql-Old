@@ -13,6 +13,7 @@
   "rules": {
     "arrow-body-style": 0,
     "no-plusplus": 0,
+    "object-curly-newline": 0,
     "prefer-destructuring": ["error", {"object": false, "array": true}],
     "remark-lint": 0
   }

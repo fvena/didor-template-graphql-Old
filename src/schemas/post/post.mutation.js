@@ -1,11 +1,15 @@
+import validate from '../../utils/validate';
+
 const Mutation = {};
 
 Mutation.createDraft = async (parent, { title, text, user }, ctx, info) => {
-  const existUser = await ctx.db.exists.User({ id: user });
+  const fields = [
+    { name: 'title', value: title, validate: ['required', 'noEmpty'] },
+    { name: 'text', value: text, validate: ['required', 'noEmpty'] },
+    { name: 'user', value: user, validate: ['required', 'noEmpty'] },
+  ];
 
-  if (!existUser) {
-    throw new Error('You must provide a valid User');
-  }
+  await validate(fields);
 
   return ctx.db.mutation.createPost(
     {
@@ -34,15 +38,13 @@ Mutation.publish = async (parent, { id }, ctx, info) => {
 };
 
 
-Mutation.updatePost = async (parent, { id, title, text, user }, ctx, info) => {
-  if (user && user !== '') {
-    const existUser = await ctx.db.exists.User({ id: user });
+Mutation.updatePost = async (parent, { id, title, text }, ctx, info) => {
+  const fields = [
+    { name: 'title', value: title, validate: ['noEmpty'] },
+    { name: 'text', value: text, validate: ['noEmpty'] },
+  ];
 
-    if (!existUser) {
-      throw new Error('You must provide a valid User');
-    }
-  }
-
+  await validate(fields);
 
   return ctx.db.mutation.updatePost(
     {
@@ -50,6 +52,23 @@ Mutation.updatePost = async (parent, { id, title, text, user }, ctx, info) => {
       data: {
         title,
         text,
+      },
+    },
+    info,
+  );
+};
+
+
+Mutation.deletePost = async (parent, { id }, ctx, info) => {
+  return ctx.db.mutation.deletePost({ where: { id } }, info);
+};
+
+
+Mutation.addPostAuthor = async (parent, { id, user }, ctx, info) => {
+  return ctx.db.mutation.updatePost(
+    {
+      where: { id },
+      data: {
         author: {
           connect: { id: user },
         },
@@ -60,8 +79,48 @@ Mutation.updatePost = async (parent, { id, title, text, user }, ctx, info) => {
 };
 
 
-Mutation.deletePost = async (parent, { id }, ctx, info) => {
-  return ctx.db.mutation.deletePost({ where: { id } }, info);
+Mutation.deletePostAuthor = async (parent, { id, user }, ctx, info) => {
+  return ctx.db.mutation.updatePost(
+    {
+      where: { id },
+      data: {
+        author: {
+          delete: { id: user },
+        },
+      },
+    },
+    info,
+  );
+};
+
+
+Mutation.likePost = async (parent, { id, user }, ctx, info) => {
+  return ctx.db.mutation.updatePost(
+    {
+      where: { id },
+      data: {
+        likedBy: {
+          connect: { id: user },
+        },
+      },
+    },
+    info,
+  );
+};
+
+
+Mutation.dislikePost = async (parent, { id, user }, ctx, info) => {
+  return ctx.db.mutation.updatePost(
+    {
+      where: { id },
+      data: {
+        likedBy: {
+          delete: { id: user },
+        },
+      },
+    },
+    info,
+  );
 };
 
 
