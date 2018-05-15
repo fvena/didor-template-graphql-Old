@@ -6,14 +6,14 @@ import * as config from './utils/vars';
 
 
 const db = new Prisma({
-  typeDefs: 'src/database/prisma.generated.graphql', // the auto-generated GraphQL schema of the Prisma API
+  typeDefs: 'src/database/prisma.graphql', // the auto-generated GraphQL schema of the Prisma API
   endpoint: config.PRISMA_ENDPOINT, // the endpoint of the Prisma API (value set in `.env`)
   secret: config.PRISMA_MANAGEMENT_API_SECRET, // Secret
   debug: true, // log all GraphQL queries & mutations sent to the Prisma API
 });
 
 const server = new GraphQLServer({
-  typeDefs: './src/schemas/schema.graphql',
+  typeDefs: './src/application/schema.graphql',
   resolvers,
   context: req => ({ ...req, db }),
 });

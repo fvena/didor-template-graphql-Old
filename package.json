@@ -48,10 +48,12 @@
     "starter"
   ],
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "faker": "^4.1.0",
     "graphql-yoga": "1.13.1",
+    "jsonwebtoken": "^8.2.1",
     "merge-graphql-schemas": "^1.5.1",
     "prisma-binding": "1.5.18",
     "validator": "^10.0.0"
@@ -75,7 +77,7 @@
     "nodemon": "1.17.3",
     "npm-run-all": "4.1.2",
     "outdated": "^0.1.1",
-    "prisma": "1.7.4",
+    "prisma": "1.8.3",
     "wait-on": "^2.1.0"
   }
 }

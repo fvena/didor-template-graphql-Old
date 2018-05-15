@@ -1,4 +1,4 @@
-type Post @model{
+type Post{
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -7,21 +7,22 @@ type Post @model{
   text: String!
   author: [User!]! @relation(name: "WrittenPosts")
   likedBy: [User!]! @relation(name: "LikedPosts")
-  comments: [Comment!]! @relation(name: "CommentsPost")
+  comments: [Comment!]!
 }
 
-type User @model{
+type User{
   id: ID! @unique
   email: String! @unique
   name: String!
-  writtenComments: [Comment!]! @relation(name: "UserComments")
+  password: String!
+  writtenComments: [Comment!]!
   writtenPosts: [Post!]! @relation(name: "WrittenPosts")
   likedPosts: [Post!]! @relation(name: "LikedPosts")
 }
 
-type Comment @model{
+type Comment{
   id: ID! @unique
   text: String!
-  commentBy: User! @relation(name: "UserComments")
-  post: Post! @relation(name: "CommentsPost")
+  commentBy: User!
+  post: Post!
 }

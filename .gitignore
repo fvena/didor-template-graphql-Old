@@ -6,7 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 .env
 package-lock.json
-src/database/prisma.generated.graphql
+src/database/prisma.graphql
 
 # Editor directories and files
 .idea
