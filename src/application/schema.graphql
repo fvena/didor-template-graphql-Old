@@ -1,5 +1,6 @@
 # import Post from "../database/prisma.graphql"
 # import Comment from "../database/prisma.graphql"
+# import Roles from "../database/prisma.graphql"
 
 type AuthPayload {
   token: String!
@@ -10,6 +11,7 @@ type User{
   id: ID!
   email: String!
   name: String!
+  rol: Roles!
   writtenComments: [Comment!]!
   writtenPosts: [Post!]!
   likedPosts: [Post!]!
