@@ -11,9 +11,7 @@ Query.drafts = (parent, args, ctx, info) => {
 
   const where = {
     isPublished: false,
-    author: {
-      id: userID,
-    },
+    author_some: { id: userID },
   };
 
   return ctx.db.query.posts({ where }, info);

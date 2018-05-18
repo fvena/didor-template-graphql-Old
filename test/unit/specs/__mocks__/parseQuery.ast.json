@@ -1,0 +1,118 @@
+{
+  "kind": "Document",
+  "definitions": [
+    {
+      "kind": "OperationDefinition",
+      "operation": "query",
+      "name": null,
+      "variableDefinitions": null,
+      "directives": [],
+      "selectionSet": {
+        "kind": "SelectionSet",
+        "selections": [
+          {
+            "kind": "Field",
+            "alias": null,
+            "name": {
+              "kind": "Name",
+              "value": "user",
+              "loc": {
+                "start": 4,
+                "end": 8
+              }
+            },
+            "arguments": [
+              {
+                "kind": "Argument",
+                "name": {
+                  "kind": "Name",
+                  "value": "id",
+                  "loc": {
+                    "start": 9,
+                    "end": 11
+                  }
+                },
+                "value": {
+                  "kind": "IntValue",
+                  "value": "5",
+                  "loc": {
+                    "start": 13,
+                    "end": 14
+                  }
+                },
+                "loc": {
+                  "start": 9,
+                  "end": 14
+                }
+              }
+            ],
+            "directives": [],
+            "selectionSet": {
+              "kind": "SelectionSet",
+              "selections": [
+                {
+                  "kind": "Field",
+                  "alias": null,
+                  "name": {
+                    "kind": "Name",
+                    "value": "firstName",
+                    "loc": {
+                      "start": 22,
+                      "end": 31
+                    }
+                  },
+                  "arguments": [],
+                  "directives": [],
+                  "selectionSet": null,
+                  "loc": {
+                    "start": 22,
+                    "end": 31
+                  }
+                },
+                {
+                  "kind": "Field",
+                  "alias": null,
+                  "name": {
+                    "kind": "Name",
+                    "value": "lastName",
+                    "loc": {
+                      "start": 36,
+                      "end": 44
+                    }
+                  },
+                  "arguments": [],
+                  "directives": [],
+                  "selectionSet": null,
+                  "loc": {
+                    "start": 36,
+                    "end": 44
+                  }
+                }
+              ],
+              "loc": {
+                "start": 16,
+                "end": 48
+              }
+            },
+            "loc": {
+              "start": 4,
+              "end": 48
+            }
+          }
+        ],
+        "loc": {
+          "start": 0,
+          "end": 50
+        }
+      },
+      "loc": {
+        "start": 0,
+        "end": 50
+      }
+    }
+  ],
+  "loc": {
+    "start": 0,
+    "end": 50
+  }
+}

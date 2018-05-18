@@ -1,6 +1,4 @@
-# import Post from "../database/prisma.graphql"
-# import Comment from "../database/prisma.graphql"
-# import Roles from "../database/prisma.graphql"
+# import Post, Comment, Role from "../database/prisma.graphql"
 
 type AuthPayload {
   token: String!
@@ -11,7 +9,7 @@ type User{
   id: ID!
   email: String!
   name: String!
-  rol: Roles!
+  role: Role!
   writtenComments: [Comment!]!
   writtenPosts: [Post!]!
   likedPosts: [Post!]!
@@ -30,9 +28,11 @@ type Query {
 }
 
 type Mutation {
-  # User
+  # Auth
   signup(email: String!, name: String!, password: String!): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
+
+  # User
   createUser(email: String!, name: String!): User!
   updateUser(id: ID!, email: String, name: String): User!
   deleteUser(id: ID!): User!

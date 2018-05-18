@@ -1,0 +1,28 @@
+{
+  "query": {
+    "users": {"onlyAuthenticate":true, "cretorAllowed":false, "creatorOfType": "", "roles":["ADMIN"]},
+    "user": {"onlyAuthenticate":true, "cretorAllowed":false, "creatorOfType": "", "roles":["ADMIN"]},
+    "me": {"onlyAuthenticate":true, "cretorAllowed":false, "creatorOfType": "", "roles":[]},
+
+    "feed": {"onlyAuthenticate":false, "cretorAllowed":false, "creatorOfType": "", "roles":[]},
+    "drafts": {"onlyAuthenticate":true, "cretorAllowed":true, "creatorOfType": "Post", "roles":["ADMIN"]},
+    "post": {"onlyAuthenticate":true, "cretorAllowed":true, "creatorOfType": "Post", "roles":["ADMIN"]}
+  },
+  "mutation": {
+    "signup": {"onlyAuthenticate":false, "cretorAllowed":false, "creatorOfType": "", "roles":[]},
+    "login": {"onlyAuthenticate":false, "cretorAllowed":false, "creatorOfType": "", "roles":[]},
+    "createUser": {"onlyAuthenticate":true, "cretorAllowed":false, "creatorOfType": "", "roles":["ADMIN"]},
+    "updateUser": {"onlyAuthenticate":true, "cretorAllowed":false, "creatorOfType": "", "roles":["ADMIN"]},
+    "deleteUser": {"onlyAuthenticate":true, "cretorAllowed":false, "creatorOfType": "", "roles":["ADMIN"]},
+
+    "createDraft": {"onlyAuthenticate":true, "cretorAllowed":false, "creatorOfType": "", "roles":[]},
+    "publish": {"onlyAuthenticate":true, "cretorAllowed":true, "creatorOfType": "Post", "roles":["ADMIN"]},
+    "updatePost": {"onlyAuthenticate":true, "cretorAllowed":true, "creatorOfType": "Post", "roles":["ADMIN"]},
+    "deletePost": {"onlyAuthenticate":true, "cretorAllowed":true, "creatorOfType": "Post", "roles":["ADMIN"]},
+    "addPostAuthor": {"onlyAuthenticate":true, "cretorAllowed":true, "creatorOfType": "Post", "roles":["ADMIN"]},
+    "likePost": {"onlyAuthenticate":true, "cretorAllowed":false, "creatorOfType": "", "roles":[]},
+    "dislikePost": {"onlyAuthenticate":true, "cretorAllowed":false, "creatorOfType": "Post", "roles":[]},
+    "addComment": {"onlyAuthenticate":true, "cretorAllowed":false, "creatorOfType": "", "roles":[]},
+    "deleteComment": {"onlyAuthenticate":true, "cretorAllowed":true, "creatorOfType": "Comment", "roles":[]}
+  }
+}

@@ -1,19 +1,19 @@
+import bcrypt from 'bcryptjs';
+
 const Mutation = {};
 
-Mutation.createUser = async (parent, { email, name }, ctx, info) => {
-  return ctx.db.mutation.createUser(
-    {
-      data: { email, name },
-    },
-    info,
-  );
+Mutation.createUser = async (parent, args, ctx, info) => {
+  const password = await bcrypt.hash(args.password, 10);
+  return ctx.db.mutation.createUser({
+    data: { ...args, password },
+  });
 };
 
-Mutation.updateUser = async (parent, { id, email, name }, ctx, info) => {
+Mutation.updateUser = async (parent, { id, email, name, role }, ctx, info) => {
   return ctx.db.mutation.updateUser(
     {
       where: { id },
-      data: { email, name },
+      data: { email, name, role },
     },
     info,
   );

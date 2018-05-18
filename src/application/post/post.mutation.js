@@ -41,30 +41,14 @@ Mutation.publish = async (parent, { id }, ctx, info) => {
 
 
 Mutation.updatePost = async (parent, { id, title, text }, ctx, info) => {
-  // [1] `getUserId` Arroja un error si el usuario no está autenticado
-  // [2] Comprueba si el autor del post es el mismo que el usuario logueado
-  // [3] Solo si el usuario es el autor, podrá modificar el Post
-  // [4] Valido los datos
-  // [5] Actualizo el Post
-
-  const userId = getUserId(ctx); // [1]
-  const postExists = await ctx.db.exists.Post({ // [2]
-    id,
-    author: { id: userId },
-  });
-
-  if (!postExists) { // [3]
-    throw new Error(`Post not found or you're not the author`);
-  }
-
   const fields = [
     { name: 'title', value: title, validate: ['noEmpty'] },
     { name: 'text', value: text, validate: ['noEmpty'] },
   ];
 
-  await validate(fields); // [4]
+  await validate(fields);
 
-  return ctx.db.mutation.updatePost( // [5]
+  return ctx.db.mutation.updatePost(
     {
       where: { id },
       data: {
@@ -78,22 +62,7 @@ Mutation.updatePost = async (parent, { id, title, text }, ctx, info) => {
 
 
 Mutation.deletePost = async (parent, { id }, ctx, info) => {
-  // [1] `getUserId` Arroja un error si el usuario no está autenticado
-  // [2] Comprueba si el autor del post es el mismo que el usuario logueado
-  // [3] Solo si el usuario es el autor, podrá modificar el Post
-  // [4] Actualizo el Post
-
-  const userId = getUserId(ctx); // [1]
-  const postExists = await ctx.db.exists.Post({ // [2]
-    id,
-    author: { id: userId },
-  });
-
-  if (!postExists) { // [3]
-    throw new Error(`Post not found or you're not the author`);
-  }
-
-  return ctx.db.mutation.deletePost({ where: { id } }, info); // [4]
+  return ctx.db.mutation.deletePost({ where: { id } }, info);
 };
 
 

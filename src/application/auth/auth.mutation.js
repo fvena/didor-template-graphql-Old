@@ -11,7 +11,7 @@ Mutation.signup = async (parent, args, ctx, info) => {
   });
 
   return {
-    token: jwt.sign({ userId: user.id }, APP_SECRET),
+    token: jwt.sign({ userId: user.id, role: user.role }, APP_SECRET),
     user,
   };
 };
@@ -28,7 +28,7 @@ Mutation.login = async (parent, { email, password }, ctx, info) => {
   }
 
   return {
-    token: jwt.sign({ userId: user.id }, APP_SECRET),
+    token: jwt.sign({ userId: user.id, role: user.role }, APP_SECRET),
     user,
   };
 };

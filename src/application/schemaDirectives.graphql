@@ -1,0 +1,58 @@
+# import Post, Comment, Role from "../database/prisma.graphql"
+
+directive @isAuthenticated on QUERY | FIELD | MUTATION
+directive @hasRole(roles: [String]) on QUERY | FIELD | MUTATION
+directive @isOwner(type: String) on QUERY | MUTATION
+directive @isOwnerOrHasRole(type: String, roles: [String]) on QUERY | MUTATION
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type User{
+  id: ID!
+  email: String! @isOwnerOrHasRole(type: "User", roles: ["ADMIN","USER"])
+  name: String!
+  role: Role! @hasRole(roles: ["ADMIN"])
+  writtenComments: [Comment!]!
+  writtenPosts: [Post!]!
+  likedPosts: [Post!]!
+}
+
+type Query {
+  # User
+  users: [User!]! @hasRole(roles: ["ADMIN"])
+  user(id: ID!): User @hasRole(roles: ["ADMIN"])
+  me: User @isAuthenticated
+
+  # Post
+  feed: [Post!]!
+  drafts: [Post!]! @isAuthenticated
+  post(id: ID!): Post
+}
+
+type Mutation {
+  # Auth
+  signup(email: String!, name: String!, password: String!): AuthPayload!
+  login(email: String!, password: String!): AuthPayload!
+
+  # User
+  createUser(email: String!, name: String!): User! @hasRole(roles: ["ADMIN"])
+  updateUser(id: ID!, email: String, name: String): User! @hasRole(roles: ["ADMIN"])
+  deleteUser(id: ID!): User! @isOwnerOrHasRole(type: "Post", roles: ["ADMIN"])
+
+  # Post
+  createDraft(title: String!, text: String!): Post! @isAuthenticated
+  publish(id: ID!): Post! @isOwner(type: "Post")
+  updatePost(id: ID!, title: String, text: String): Post! @isOwnerOrHasRole(type: "Post", roles: ["ADMIN"])
+  deletePost(id: ID!): Post! @isOwnerOrHasRole(type: "Post", roles: ["ADMIN"])
+  addPostAuthor(id: ID!, user: String!): Post! @hasRole(roles: ["ADMIN"])
+  deletePostAuthor(id: ID!, user: String!): Post! @hasRole(roles: ["ADMIN"])
+  likePost(id: ID!): Post! @isAuthenticated
+  dislikePost(id: ID!): Post! @isAuthenticated
+
+  # Comment
+  addComment(text: String!, userID: String!, postID: String!): Post! @isAuthenticated
+  deleteComment(id: ID!): Post! @isOwner(type: "Comment")
+}

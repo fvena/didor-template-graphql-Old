@@ -14,7 +14,7 @@ type User{
   id: ID! @unique
   email: String! @unique
   name: String!
-  rol: Roles! @default(value: "USER")
+  role: Role! @default(value: "USER")
   password: String!
   writtenComments: [Comment!]!
   writtenPosts: [Post!]! @relation(name: "WrittenPosts")
@@ -24,11 +24,11 @@ type User{
 type Comment{
   id: ID! @unique
   text: String!
-  commentBy: User!
+  author: User!
   post: Post!
 }
 
-enum Roles {
+enum Role {
   USER
   ADMIN
 }

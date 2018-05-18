@@ -99,8 +99,8 @@ function getComments(usersArray, n) {
     user.id = author;
 
     comment.text = text;
-    comment.commentBy = {};
-    comment.commentBy.connect = user;
+    comment.author = {};
+    comment.author.connect = user;
 
     result.push(comment);
   }

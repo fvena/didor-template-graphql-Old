@@ -1,0 +1,12 @@
+{
+  "query": {
+    "noValidResolver": {"noValidProperty":true, "cretorAllowed":"NoBooelan", "creatorOfType": "", "roles":"NoArray"},
+    "noAuthenticate": {"onlyAuthenticate":false, "cretorAllowed":true, "creatorOfType": "", "roles":["ADMIN"]},
+    "authenticate": {"onlyAuthenticate":true, "cretorAllowed":false, "creatorOfType": "", "roles":[]},
+    "roles": {"onlyAuthenticate":true, "cretorAllowed":true, "creatorOfType": "", "roles":["ADMIN","USER"]},
+    "author": {"onlyAuthenticate":true, "cretorAllowed":true, "creatorOfType": "", "roles":["ADMIN","USER"]}
+  },
+  "mutation": {
+    "noAuthenticate": {"onlyAuthenticate":false, "cretorAllowed":true, "roles":["ADMIN"]}
+  }
+}
