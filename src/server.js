@@ -4,7 +4,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import permissions from './utils/permission';
 import resolvers from './utils/resolvers';
-import directiveResolvers from './utils/directives';
+// import directiveResolvers from './utils/directives';
 import * as config from './utils/vars';
 
 const db = new Prisma({
@@ -14,10 +14,11 @@ const db = new Prisma({
   debug: true, // log all GraphQL queries & mutations sent to the Prisma API
 });
 
+
+// Add directiveResolvers for use custom directives
 const server = new GraphQLServer({
   typeDefs: './src/application/schema.graphql',
   resolvers,
-  directiveResolvers,
   context: req => ({ ...req, db }),
 });
 

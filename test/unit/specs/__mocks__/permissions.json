@@ -3,8 +3,10 @@
     "noValidResolver": {"noValidProperty":true, "cretorAllowed":"NoBooelan", "creatorOfType": "", "roles":"NoArray"},
     "noAuthenticate": {"onlyAuthenticate":false, "cretorAllowed":true, "creatorOfType": "", "roles":["ADMIN"]},
     "authenticate": {"onlyAuthenticate":true, "cretorAllowed":false, "creatorOfType": "", "roles":[]},
-    "roles": {"onlyAuthenticate":true, "cretorAllowed":true, "creatorOfType": "", "roles":["ADMIN","USER"]},
-    "author": {"onlyAuthenticate":true, "cretorAllowed":true, "creatorOfType": "", "roles":["ADMIN","USER"]}
+    "roles": {"onlyAuthenticate":true, "cretorAllowed":false, "creatorOfType": "", "roles":["ADMIN","USER"]},
+    "nocreatorOfType": {"onlyAuthenticate":true, "cretorAllowed":true, "creatorOfType": "", "roles":["ADMIN","USER"]},
+    "author": {"onlyAuthenticate":true, "cretorAllowed":true, "creatorOfType": "Comment", "roles":["ADMIN","USER"]},
+    "authors": {"onlyAuthenticate":true, "cretorAllowed":true, "creatorOfType": ["Post"], "roles":["ADMIN","USER"]}
   },
   "mutation": {
     "noAuthenticate": {"onlyAuthenticate":false, "cretorAllowed":true, "roles":["ADMIN"]}

@@ -1,12 +1,20 @@
+import jwt from 'jsonwebtoken';
 import { tester } from 'graphql-tester';
-import { APP_PORT } from '../../utils/vars';
+import { APP_PORT, APP_SECRET } from '../../../src/utils/vars';
+import { toContainObject } from '../../utils/extend';
 
-const testing = tester({
-  url: `http://localhost:${APP_PORT}/`,
-});
+/**
+ * Return valid Authorization token
+ */
+function token(userId, role, secret) {
+  return jwt.sign({ userId, role }, secret);
+}
 
+// const admin = jwt.sign({ userId, 'ADMIN' }, APP_SECRET);
 let userID = ''; // eslint-disable-line
 let postID = ''; // eslint-disable-line
+const user = token('userID', 'USER', APP_SECRET);
+const admin = token('adminID', 'ADMIN', APP_SECRET);
 
 expect.extend({
   toContainObject(received, argument) {
@@ -31,27 +39,19 @@ expect.extend({
   },
 });
 
+const testingAdmin = tester({
+  url: `http://localhost:${APP_PORT}/`,
+  authorization: admin,
+});
+
+const testingUser = tester({
+  url: `http://localhost:${APP_PORT}/`,
+  authorization: user,
+});
+
 describe('Post resolvers', () => {
-  beforeAll((done) => {
-    testing(`
-      mutation {
-        createUser (
-          email: "autor@email.com"
-          name: "John Doe"
-        ) {
-          id
-        }
-      }
-    `)
-      .then((response) => {
-        userID = response.data.createUser.id;
-        done();
-      });
-  });
-
-
   test('Debería devolver un array vacio si no hay datos', (done) => {
-    testing(`
+    testingAdmin(`
       {
         drafts {
           id
@@ -74,7 +74,7 @@ describe('Post resolvers', () => {
 
 
   test('No debería registrar un post si no se pasan todos los datos necesarios', (done) => {
-    testing(`
+    testingAdmin(`
       mutation {
         createDraft (
           title: "Post title"
@@ -93,18 +93,18 @@ describe('Post resolvers', () => {
 
 
   test('No debería registrar un post si no se pasa un usuario registrado como autor', (done) => {
-    testing(`
+    testingUser(`
       mutation {
         createDraft (
           title: "Post title"
           text: "Post text"
-          user: "noUserID"
         ) {
           id
         }
       }
     `)
       .then((response) => {
+        console.log(response);
         expect(response.status).toBe(200);
         expect(response.success).toBeFalsy();
         expect(response.errors).toContainObject({ message: 'You must provide a valid User' });
@@ -240,7 +240,6 @@ describe('Post resolvers', () => {
       }
     `)
       .then((response) => {
-        console.log(response)
         expect(response.status).toBe(400);
         expect(response.success).toBeFalsy();
         done();

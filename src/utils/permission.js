@@ -52,29 +52,51 @@ function getUser(authorization, appSecret) {
  *
  * Return: true if user is Author
  */
-async function checkIsAuthor(resolver, user, permission) {
-  const typeID = resolver.arguments.id;
+function checkIsAuthor(resolver, user, permission) {
+  const id = (resolver.arguments) ? resolver.arguments.find(argument => argument.name === 'id').value : null;
   const userID = user.userId;
   const type = permission.creatorOfType;
 
-  if (!typeID) throw new Error('Need a Type where search creator');
-  if (!type) throw new Error('Need a Type where search creator');
+  if (!type) throw new Error('Must provide a creatorOfType in permissions file');
 
-  return prisma.exists[type]({ id: typeID, author: { id: userID } });
+  if (Array.isArray(type)) {
+    if (id) return prisma.exists[type]({ id, author_some: { id: userID } });
+    return prisma.exists[type]({ author_some: { id: userID } });
+  }
+
+  if (id) return prisma.exists[type]({ id, author: { id: userID } });
+  return prisma.exists[type]({ author: { id: userID } });
 }
 
 
 /**
- * Check if a user has permission to execute a query
+ * Middelware for check if a user has permission to execute a query
  *
- * queries: List of queries
- * rules:   Object with resolvers permissions
- * user:    Object with user id and role
- *
- * Return: Result of checking permissions
+ * options: Object with permission module options
  */
-async function checkPermission(queries, rules, user, superAdmin) {
-  queries.resolvers.forEach((resolver) => {
+function permissions(options = {}) {
+  return async (request, response, next) => {
+    const defaults = {
+      appSecret: 'jwtsecret123',
+      file: '../application/permissions.json',
+      superAdmin: 'KRATOS',
+    };
+
+    const settings = Object.assign({}, defaults, options);
+
+    if (!request.body.query) throw new Error('No pass graphl query');
+
+    const rules = await getPermissions(settings.file);
+    const queries = await parseQuery(request.body.query);
+    const authorization = request.headers.authorization;
+    const user = (authorization) ? await getUser(authorization, settings.appSecret) : null;
+
+    // TODO: permitir queries múltiples
+    // No puedo sacarlo a una función, porque los test no funcionan con
+    // async/await anidados
+
+    // queries.resolvers.forEach(async (resolver) => {
+    const [resolver] = queries.resolvers;
     const permission = rules[queries.type][resolver.name];
 
     // Check if resolver is defined in permissions
@@ -96,63 +118,21 @@ async function checkPermission(queries, rules, user, superAdmin) {
     if (permission.onlyAuthenticate) {
       if (!user) throw new Error('Must provide a valid Authorization Code');
       if (!user.role) throw new Error('Must provide a valid Role');
+      if (!user.userId) throw new Error('Must provide a valid user ID');
 
       // superAdmin user no need permissions
-      if (user.role !== superAdmin) {
+      if (user.role !== settings.superAdmin) {
         if (permission.roles.length) {
           if (!permission.roles.includes(user.role)) {
             if (!permission.cretorAllowed) throw new Error('Not authorized');
-            if (!checkIsAuthor(resolver, user, permission)) throw new Error('Not authorized');
+            if (!await checkIsAuthor(resolver, user, permission)) throw new Error('Not authorized');
           }
         } else if (permission.cretorAllowed) {
-          if (!checkIsAuthor(resolver, user, permission)) throw new Error('Not authorized');
+          if (!await checkIsAuthor(resolver, user, permission)) throw new Error('Not authorized');
         }
       }
-
-      // eslint-disable-next-line
-      // if (!permission.roles.length || (permission.roles.length && !permission.roles.includes(user.role))) {
-      //   if (permission.cretorAllowed) {
-      //     if (!user.userId) throw new Error('Must provide a valid user ID');
-      //
-      //     const authorID = 'authorId';
-      //     // Tengo que hacer que los test se ejecuten en el entorno de los test
-      //     // Tengo que crear un Usuario en los test
-      //     // Tengo que añadir aquí una comprobación del usuario
-      //
-      //     if (user.userId !== authorID) throw new Error('Not authorized');
-      //   }
-      // }
     }
-  });
-
-  return true;
-}
-
-
-/**
- * Middelware for check if a user has permission to execute a query
- *
- * options: Object with permission module options
- */
-function permissions(options = {}) {
-  return (request, response, next) => {
-    const defaults = {
-      appSecret: 'jwtsecret123',
-      file: '../application/permissions.json',
-      superAdmin: 'KRATOS',
-    };
-
-    const settings = Object.assign({}, defaults, options);
-
-    console.log('----------- PERMISSIONS --------------');
-    if (request.body.query) {
-      const rules = getPermissions(settings.file);
-      const queries = parseQuery(request.body.query);
-      const authorization = request.headers.authorization;
-      const user = (authorization) ? getUser(authorization, settings.appSecret) : null;
-
-      checkPermission(queries, rules, user, settings.superAdmin);
-    }
+    // });
 
     next();
   };
